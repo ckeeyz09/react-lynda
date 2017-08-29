@@ -5,42 +5,39 @@
 	<script src="https://fb.me/react-15.2.1.js"></script>
 	<script src="https://fb.me/react-dom-15.2.1.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 	<div id="app"></div>
 	<script type="text/babel">
-	var Checkbox = React.createClass({
+	var Box = React.createClass({
 		getInitialState() {
 			return {
-				checked: true
+				backgroundColor: "orange",
+				height: 200,
+				width: 200
 			}
 		},
 
-		handleCheck() {
-			this.setState({
-				checked: !this.state.checked
-			})
-		},
+		update() {
+			this.setState({backgroundColor: 'red'})
+		}, 
 
-		render() {
-			var msg
-			if(this.state.checked) {
-				msg="checked"
-			}
-			else {
-				msg="unchecked"
-			}
 
-			return(
-				<div>
-					<input type="Checkbox" onChange={this.handleCheck} defaultChecked={this.state.checked}/>
-					<p>This box is {msg}</p>
-				</div>
-			)
-		}
+
+	    render() {
+	        return (
+	        	<div style={this.state}
+	        		 onClick={this.update}>	
+	        	</div>
+	        )
+	    },
+
+	    componentDidUpdate() {
+	    	alert("component did update")
+	    }
 	})
-	ReactDOM.render(<Checkbox/>, document.getElementById('app'))
+	ReactDOM.render(<Box />, 
+	    document.getElementById('app'))
 
 	</script>
 </body>
