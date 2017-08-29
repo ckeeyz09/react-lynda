@@ -11,14 +11,27 @@
 	<div id="app"></div>
 	<script type="text/babel">
 		var Note = React.createClass({
+			getInitialState() {
+				return {editing: false}
+			},
 			edit () {
-				alert("editing note")
+				this.setState({editing:true}) 
+			},
+			save() {
+				var val = this.refs.newText.value
+				this.setState({editing: false})
 			},
 			remove() {
 				alert("removing note")
 			},
-
-			render() {
+			renderForm() {
+				return (
+				<div className="note">
+					<textarea ref="newText"></textarea>
+					<button onClick={this.save}>Save</button>
+				</div>)
+			},
+			renderDisplay() {
 				return(
 					<div className="note">
 						<p>
@@ -30,9 +43,45 @@
 						</span>
 					</div>
 				)
+			},
+			render () {
+				return (this.state.editing) ? this.renderForm(): this.renderDisplay()
 			}
 		})
-		ReactDOM.render(<Note>Hello World </Note>, document.getElementById("app"))
+
+		var Board = React.createClass({
+			propTypes: {
+				count: function(props, propName) {
+					if (typeof props[propName] !== "number") {
+						return new Error("The count must be a number")
+					}
+
+					if (props[propName] > 100) {
+						return new Error("There are way too many notes in here!")
+					}
+				}
+			},
+
+			getInitialState() {
+				return {
+					notes: [
+					"Call Bob",
+					"Email Sara",
+					"Eat Lunch",
+					"Finish App"
+					]
+				}
+			},
+
+			render() {
+				return (<div className="board">
+					{this.state.notes.map((note, i) => {
+					return <Note key={i}>{note}</Note>
+					})}
+				</div>)
+			}
+		})
+		ReactDOM.render(<Board count={10}/>, document.getElementById("app"))
 
 	</script>
 </body>
